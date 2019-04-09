@@ -1,0 +1,110 @@
+{% extends 'Base.html' %}
+{% block content %}
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active">
+            <a href="#">Home</a>
+          </li>
+          <li class="breadcrumb-item active">Block Explore</li>
+        </ol>
+        
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+
+              <div class="card-body">
+                <p class="card-text">Enter a node URL and click on "Explore" button to check all Block</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="container alert alert-secondary">
+
+            <div class="row">
+              <label class="col-sm-2">Node URL:</label>
+              <div class="col-sm-10">
+                <textarea id="node_url" rows="1" class="form-control">http://0.0.0.0:9001</textarea>
+              </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+              <div class="col-lg-12 text-center">
+                <input type="button" id="view_transactions" class="btn btn-primary btn-lg" value="Explore">
+              </div>
+            </div>
+
+        </div>
+
+
+        <!-- DataTables Example -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="table-responsive">
+                <table id="transactions_table" class="table table-striped table-bordered" cellspacing="0" width="100%"></table>
+            </div>
+          </div>
+        </div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+
+  $(function(){
+    
+    $('#view_transactions').click(function(){
+      console.log("hello");
+      $.ajax({
+        url: document.getElementById("node_url").value + "/chain",
+        type: 'GET',
+        success: function(response){
+
+          console.log(response);
+          //Generate Transactions Table
+          var transactions = [];
+          count = 1;
+
+          for (i = 1; i < response.length; i++) { 
+            for (j = 0; j < response["chain"][i]["transactions"].length; j++) {
+
+              //format date 
+              var options = {  year: "numeric", month: "short",  day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit"  };
+              var date = new Date(response["chain"][i]["timestamp"] * 1000);
+              var formattedDateTime = date.toLocaleTimeString("en-us", options);
+
+              transaction = [count,
+                            response["chain"][i]["transactions"][j]["recipient_address"],
+                            response["chain"][i]["transactions"][j]["sender_address"],
+                            response["chain"][i]["transactions"][j]["value"],
+                            formattedDateTime,
+                            response["chain"][i]["block_number"]];
+              transactions.push(transaction);
+
+              count += 1;
+            };
+          };
+
+          // Restrict a column to 10 characters, do split words
+            $('#transactions_table').dataTable( {
+              data: transactions,
+              columns: [{ title: "#" },
+                        { title: "Recipient Address"},
+                        { title: "Sender Address"},
+                        { title: "Value"},
+                        { title: "Timestamp"},
+                        { title: "Block"}],
+              columnDefs: [ {targets: [1,2,3,4,5], render: $.fn.dataTable.render.ellipsis( 25 )}]
+            } );
+
+        },
+        error: function(error){
+          console.log(error);
+        }
+      });
+    });
+  })
+</script>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'Base.html' %}
+{% block content %}
+				<!-- Breadcrumbs-->
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item">
+						<a href="{{ url_for('home') }}">Home</a>
+					</li>
+					<li class="breadcrumb-item active">Upload</li>
+				</ol>
+				
+				<!-- Upload file start -->
+				{% for category, message in get_flashed_messages(with_categories=true) %}
+					<div class="alert alert-{{ category }}">
+						<button type="button" class="close" data-dismiss="alert">x</button>
+							{{ message }}
+					</div>
+					{% endfor %}
+					<div class="container" style="text-align:center; position:absolute; top:50%; left:57%; transform:translate(-50%,-50%); width:500px; padding:30px; box-shadow: 0px 10px 10px #d3d3d3;">
+					<h2 style="margin-bottom:25px;">Upload File</h2>
+					<h6 style="margin-bottom:50px;">Supported Files ( .txt, .pdf, .png, .jpg, .jpeg, .py, .mp3 )</h6>
+					<button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#uploadModal">Upload</button>
+					</div>
+
+					<!-- Upload Modal -->
+					<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									
+									<h4 class="modal-title" id="uploadModalLabel">Upload A File</h4>
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">
+									<form action="/upload_file" method="POST" enctype="multipart/form-data">
+										<div class="form-group">
+											<input type="file" id="uploadedFile" name="uploadedFile">
+											<p class="help-block">Select your file to add to Upload.</p>
+										</div>
+										<div class="form-group">
+											<button type="submit" class="btn btn-success">Upload</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				<!-- Upload file end -->
+
+			{% endblock %}

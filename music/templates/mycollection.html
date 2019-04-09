@@ -1,0 +1,40 @@
+{% extends 'Base.html' %}
+{% block content %}
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{{ url_for('home') }}">Home</a>
+          </li>
+          <li class="breadcrumb-item active">My Collection</li>
+        </ol>
+
+        {% if uploaded|length == 0 %}
+          Nothing Uploaded
+          {% else %}
+          <div class="card mb-3">
+          <div class="card-body">
+                  <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                  <th>Filename</th>
+                  <th>File Hash</th>
+                  <th>Short URL</th>
+                </tr>
+                </thead>
+                {% for upload in uploaded %}
+                <tbody>
+                <tr>
+                  <td>{{ upload.filename }}</td>
+                  <td><a href="{{ config['REDIRECT_BASE_URL']}}/{{ upload.ipfs_hash }}">{{ upload.ipfs_hash}}</a></td>
+                  <td><a href="{{ config['SHORT_REDIRECT_DOMAIN'] }}/s/{{ upload.short_url }}">http://localhost:9001/s/{{ upload.short_url }}</a></td>
+                </tr>
+                <tbody>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+          </div>
+          {% endif %}
+
+     {% endblock %}
