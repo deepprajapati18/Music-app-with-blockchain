@@ -1,15 +1,19 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
+from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_cors import CORS
 
 
 app = Flask(__name__)
-CORS(app)
 app.config.from_object('config')
 
-db = SQLAlchemy(app)
+mongo = PyMongo(app)
+CORS(app)
+
+
+# db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app) #for authentication and initialization
 
@@ -19,3 +23,4 @@ login_manager.login_message_category = 'info'  #bootstarp class -> dispaly in bl
 
 
 from music import routes 
+from music import admin

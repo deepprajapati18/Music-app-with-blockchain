@@ -1,10 +1,10 @@
-from music import db, app
+from music import app
 
 
 if __name__ == "__main__":
 
-	if not app.config['DB_CREATED']:
-		db.create_all()
+	# if not app.config['DB_CREATED']:
+		# db.create_all()
 
 	app.run(
 		host=app.config['HOST'], 

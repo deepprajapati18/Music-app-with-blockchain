@@ -8,9 +8,13 @@ USE_RELOADER = True
 SECRET_KEY = '4f766a97b5b7244249daaae47365cc66'
 
 #DB Configuration
-SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
-SQLALCHEMY_TRACK_MODIFICATIONS = True
-DB_CREATED = False
+# SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
+# SQLALCHEMY_TRACK_MODIFICATIONS = True
+# DB_CREATED = False
+
+MONGO_DBNAME = 'Music'
+MONGO_URI = 'mongodb://localhost:27017/Music'
+CORS_HEADERS = 'Content-Type'
 
 # IPFS Configuration
 IPFS_HOST = '127.0.0.1'
